@@ -697,6 +697,12 @@ enum RBACPermissions
     // 799 - 834 6.x only
     RBAC_PERM_COMMAND_DEBUG_LOADCELLS                        = 835,
     RBAC_PERM_COMMAND_DEBUG_BOUNDARY                         = 836,
+    RBAC_PERM_COMMAND_NPC_SPAWNGROUP                         = 837,
+    RBAC_PERM_COMMAND_NPC_DESPAWNGROUP                       = 838,
+    RBAC_PERM_COMMAND_GOBJECT_SPAWNGROUP                     = 839,
+    RBAC_PERM_COMMAND_GOBJECT_DESPAWNGROUP                   = 840,
+    RBAC_PERM_COMMAND_LIST_RESPAWNS                          = 841,
+    RBAC_PERM_COMMAND_DEBUG_DYNAMICFACTOR                    = 842,
 
     // custom permissions 1000+
     RBAC_PERM_MAX
