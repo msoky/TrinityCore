@@ -515,6 +515,12 @@ struct GlyphPropertiesEntry
     //uint32    GlyphExclusiveCategoryID;                   // 4
 };
 
+struct GtArmorMitigationByLvlEntry
+{
+    //uint32 level;
+    float   KFactor;
+};
+
 struct GtBarberShopCostBaseEntry
 {
     //uint32 level;
@@ -804,10 +810,10 @@ struct LiquidTypeEntry
     //uint32    ParticleTexSlots;                           // 13
     //uint32    MaterialID;                                 // 14
     //char*     Texture[6];                                 // 15-20
-    //uint32    Color[2];                                   // 21-23
-    //float     Float[18];                                  // 24-41
-    //uint32    Int[4];                                     // 42-45
-    //uint32    Unk3[5];                                    // 46-50
+    //uint32    DepthTexCount[6]                            // 21-26
+    //uint32    Color[2];                                   // 27-28
+    //float     Float[18];                                  // 29-46
+    //uint32    Int[4];                                     // 47-50
 };
 
 #define MAX_LOCK_CASE 8
