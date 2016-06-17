@@ -1220,7 +1220,7 @@ void Player::Update(uint32 p_time)
             m_zoneUpdateTimer -= p_time;
     }
 
-    if (m_timeSyncTimer > 0)
+    if (m_timeSyncTimer > 0 && !IsBeingTeleportedFar())
     {
         if (p_time >= m_timeSyncTimer)
             SendTimeSync();
@@ -1635,18 +1635,10 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
 
             if (!GetSession()->PlayerLogout())
             {
-                if (mEntry->IsDungeon())
-                {
-                    WorldPackets::Instance::UpdateLastInstance updateLastInstance;
-                    updateLastInstance.MapID = mapid;
-                    SendDirectMessage(updateLastInstance.Write());
-                }
-
-                WorldPackets::Movement::NewWorld packet;
-                packet.MapID = mapid;
-                packet.Pos = static_cast<Position>(m_teleport_dest);
-                packet.Reason = !(options & TELE_TO_SEAMLESS) ? NEW_WORLD_NORMAL : NEW_WORLD_SEAMLESS;
-                SendDirectMessage(packet.Write());
+                WorldPackets::Movement::SuspendToken suspendToken;
+                suspendToken.SequenceIndex = m_movementCounter; // not incrementing
+                suspendToken.Reason = options & TELE_TO_SEAMLESS ? 2 : 1;
+                SendDirectMessage(suspendToken.Write());
             }
 
             // move packet sent by client always after far teleport
@@ -2913,7 +2905,6 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
 
     bool dependent_set = false;
     bool disabled_case = false;
-    bool superceded_old = false;
 
     PlayerSpellMap::iterator itr = m_spells.find(spellId);
 
@@ -2924,7 +2915,7 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
     {
         uint32 next_active_spell_id = 0;
         // fix activate state for non-stackable low rank (and find next spell for !active case)
-        if (!spellInfo->IsStackableWithRanks() && spellInfo->IsRanked())
+        if (spellInfo->IsRanked())
         {
             if (uint32 next = sSpellMgr->GetNextSpellInChain(spellId))
             {
@@ -3037,7 +3028,7 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
         newspell->disabled  = disabled;
 
         // replace spells in action bars and spellbook to bigger rank if only one spell rank must be accessible
-        if (newspell->active && !newspell->disabled && !spellInfo->IsStackableWithRanks() && spellInfo->IsRanked() != 0)
+        if (newspell->active && !newspell->disabled && spellInfo->IsRanked())
         {
             for (PlayerSpellMap::iterator itr2 = m_spells.begin(); itr2 != m_spells.end(); ++itr2)
             {
@@ -3061,7 +3052,6 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
                             itr2->second->active = false;
                             if (itr2->second->state != PLAYERSPELL_NEW)
                                 itr2->second->state = PLAYERSPELL_CHANGED;
-                            superceded_old = true;          // new spell replace old in action bars and spell book.
                         }
                         else
                         {
@@ -3181,7 +3171,7 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
     }
 
     // return true (for send learn packet) only if spell active (in case ranked spells) and not replace old spell
-    return active && !disabled && !superceded_old;
+    return active && !disabled;
 }
 
 void Player::AddTemporarySpell(uint32 spellId)
@@ -3387,7 +3377,7 @@ void Player::RemoveSpell(uint32 spell_id, bool disabled, bool learn_low_rank)
     {
         // if ranked non-stackable spell: need activate lesser rank and update dendence state
         /// No need to check for spellInfo != NULL here because if cur_active is true, then that means that the spell was already in m_spells, and only valid spells can be pushed there.
-        if (cur_active && !spellInfo->IsStackableWithRanks() && spellInfo->IsRanked())
+        if (cur_active && spellInfo->IsRanked())
         {
             // need manually update dependence state (learn spell ignore like attempts)
             PlayerSpellMap::iterator prev_itr = m_spells.find(prev_id);
@@ -17787,7 +17777,6 @@ void Player::_LoadQuestStatus(PreparedQueryResult result)
 
 void Player::_LoadQuestStatusObjectives(PreparedQueryResult result)
 {
-    uint16 slot = 0;
 
     ////                                                       0        1       2
     //QueryResult* result = CharacterDatabase.PQuery("SELECT quest, objective, data WHERE guid = '%u'", GetGUIDLow());
@@ -17800,8 +17789,9 @@ void Player::_LoadQuestStatusObjectives(PreparedQueryResult result)
 
             uint32 questID = fields[0].GetUInt32();
 
+            uint16 slot = FindQuestSlot(questID);
             auto itr = m_QuestStatus.find(questID);
-            if (itr != m_QuestStatus.end())
+            if (itr != m_QuestStatus.end() && slot < MAX_QUEST_LOG_SIZE)
             {
                 QuestStatusData& questStatusData = itr->second;
                 uint8 objectiveIndex = fields[1].GetUInt8();
@@ -20898,13 +20888,13 @@ void Player::InitDataForForm(bool reapplyMods)
     switch (form)
     {
         case FORM_GHOUL:
-        case FORM_CAT:
+        case FORM_CAT_FORM:
         {
             if (getPowerType() != POWER_ENERGY)
                 setPowerType(POWER_ENERGY);
             break;
         }
-        case FORM_BEAR:
+        case FORM_BEAR_FORM:
         {
             if (getPowerType() != POWER_RAGE)
                 setPowerType(POWER_RAGE);
@@ -22004,7 +21994,7 @@ void Player::UpdateTriggerVisibility()
             creature->BuildValuesUpdateBlockForPlayer(&udata, this);
             creature->RemoveFieldNotifyFlag(UF_FLAG_PUBLIC);
         }
-        else if (itr->IsGameObject())
+        else if (itr->IsAnyTypeGameObject())
         {
             GameObject* go = GetMap()->GetGameObject(*itr);
             if (!go)
@@ -22222,6 +22212,14 @@ void Player::SetGroup(Group* group, int8 subgroup)
 
 void Player::SendInitialPacketsBeforeAddToMap()
 {
+    if (!(m_teleport_options & TELE_TO_SEAMLESS))
+    {
+        m_movementCounter = 0;
+        ResetTimeSync();
+    }
+
+    SendTimeSync();
+
     /// Pass 'this' as argument because we're not stored in ObjectAccessor yet
     GetSocial()->SendSocialList(this, SOCIAL_FLAG_ALL);
 
@@ -22312,9 +22310,6 @@ void Player::SendInitialPacketsAfterAddToMap()
     uint32 newzone, newarea;
     GetZoneAndAreaId(newzone, newarea);
     UpdateZone(newzone, newarea);                            // also call SendInitWorldStates();
-
-    ResetTimeSync();
-    SendTimeSync();
 
     GetSession()->SendLoadCUFProfiles();
 
@@ -25787,14 +25782,6 @@ void Player::DeleteGarrison()
         _garrison->Delete();
         _garrison.reset();
     }
-}
-
-void Player::SendMovementSetCanTransitionBetweenSwimAndFly(bool apply)
-{
-    WorldPackets::Movement::MoveSetFlag packet(apply ? SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY : SMSG_MOVE_DISABLE_TRANSITION_BETWEEN_SWIM_AND_FLY);
-    packet.MoverGUID = GetGUID();
-    packet.SequenceIndex = m_movementCounter++;
-    SendMessageToSet(packet.Write(), true);
 }
 
 void Player::SendMovementSetCollisionHeight(float height)

@@ -302,7 +302,7 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     float val2 = 0.0f;
     float level = float(getLevel());
 
-    ChrClassesEntry const* entry = sChrClassesStore.LookupEntry(getClass());
+    ChrClassesEntry const* entry = sChrClassesStore.AssertEntry(getClass());
     UnitMods unitMod = ranged ? UNIT_MOD_ATTACK_POWER_RANGED : UNIT_MOD_ATTACK_POWER;
 
     uint16 index = UNIT_FIELD_ATTACK_POWER;
@@ -417,12 +417,12 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
         if (Item* weapon = GetWeaponForAttack(BASE_ATTACK, true))
             weaponSpeed =  weapon->GetTemplate()->GetDelay() / 1000;
 
-        if (GetShapeshiftForm() == FORM_CAT)
+        if (GetShapeshiftForm() == FORM_CAT_FORM)
         {
             weaponMinDamage = weaponMinDamage / weaponSpeed;
             weaponMaxDamage = weaponMaxDamage / weaponSpeed;
         }
-        else if (GetShapeshiftForm() == FORM_BEAR)
+        else if (GetShapeshiftForm() == FORM_BEAR_FORM)
         {
             weaponMinDamage = weaponMinDamage / weaponSpeed + weaponMinDamage / 2.5;
             weaponMaxDamage = weaponMinDamage / weaponSpeed + weaponMaxDamage / 2.5;
