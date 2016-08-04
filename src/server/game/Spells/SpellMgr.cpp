@@ -21,7 +21,6 @@
 #include "ObjectMgr.h"
 #include "SpellAuraDefines.h"
 #include "SharedDefines.h"
-#include "DBCStores.h"
 #include "Chat.h"
 #include "BattlegroundMgr.h"
 #include "BattlefieldWG.h"
@@ -69,24 +68,24 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
         case SPELLFAMILY_GENERIC:
         {
             // Entrapment -- 135373
-            if (spellproto->SpellIconID == 20 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39588)
+            if (spellproto->SpellIconID == 20 && spellproto->GetSpellVisual() == 39588)
                 return DIMINISHING_ROOT;
 
             // Intimidation -- 24394
-            if (spellproto->SpellIconID == 166 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 2816)
+            if (spellproto->SpellIconID == 166 && spellproto->GetSpellVisual() == 2816)
                 return DIMINISHING_STUN;
             // Pulverize (Primal Earth Elemental) -- 118345
-            if (spellproto->SpellIconID == 4507 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39877)
+            if (spellproto->SpellIconID == 4507 && spellproto->GetSpellVisual() == 39877)
                 return DIMINISHING_STUN;
             // Static Charge (Capacitor Totem) -- 118905
-            if (spellproto->SpellIconID == 54 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 24442)
+            if (spellproto->SpellIconID == 54 && spellproto->GetSpellVisual() == 24442)
                 return DIMINISHING_STUN;
             // Remorseless Winter -- 115001
-            if (spellproto->SpellIconID == 5744 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 23514)
+            if (spellproto->SpellIconID == 5744 && spellproto->GetSpellVisual() == 23514)
                 return DIMINISHING_STUN;
 
             // Gorefiend's Grasp -- 108199
-            if (spellproto->SpellIconID == 5743 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 28937)
+            if (spellproto->SpellIconID == 5743 && spellproto->GetSpellVisual() == 28937)
                 return DIMINISHING_AOE_KNOCKBACK;
             break;
         }
@@ -151,7 +150,7 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
             if (spellproto->SpellFamilyFlags[1] & 0x8000000)
                 return DIMINISHING_INCAPACITATE;
             // Blood Horror -- 137143, no flags (17986)
-            if (spellproto->SpellIconID == 6447 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 26758)
+            if (spellproto->SpellIconID == 6447 && spellproto->GetSpellVisual() == 26758)
                 return DIMINISHING_INCAPACITATE;
 
             // Fear -- 118699
@@ -195,11 +194,11 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
             if (spellproto->SpellFamilyFlags[0] & 0x2000)
                 return DIMINISHING_STUN;
             // Rake -- 163505 -- no flags on the stun, 20490
-            if (spellproto->SpellIconID == 494 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38283)
+            if (spellproto->SpellIconID == 494 && spellproto->GetSpellVisual() == 38283)
                 return DIMINISHING_STUN;
 
             // Incapacitating Roar -- 99, no flags on the stun, 14
-            if (spellproto->SpellIconID == 960 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38528)
+            if (spellproto->SpellIconID == 960 && spellproto->GetSpellVisual() == 38528)
                 return DIMINISHING_INCAPACITATE;
 
             // Cyclone -- 33786
@@ -221,7 +220,7 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
             if (spellproto->SpellFamilyFlags[0] & 0x200)
                 return DIMINISHING_ROOT;
             // Mass Entanglement -- 102359, no flags on the root, 13535
-            if (spellproto->SpellIconID == 5782 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38269)
+            if (spellproto->SpellIconID == 5782 && spellproto->GetSpellVisual() == 38269)
                 return DIMINISHING_ROOT;
 
             // Faerie Fire -- 770, 20 seconds in PvP (6.0)
@@ -260,14 +259,14 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
                 // return DIMINISHING_AOE_KNOCKBACK;
 
             // Charge (Tenacity pet) -- 53148, no flags (5526)
-            if (spellproto->SpellIconID == 1559 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39480)
+            if (spellproto->SpellIconID == 1559 && spellproto->GetSpellVisual() == 39480)
                 return DIMINISHING_ROOT;
             // Narrow Escape -- 136634, no flags (17964)
             if (spellproto->SpellIconID == 3342 && spellproto->SchoolMask == 8)
                 return DIMINISHING_ROOT;
 
             // Binding Shot -- 117526, no flags (15581)
-            if (spellproto->SpellIconID == 4612 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 6859)
+            if (spellproto->SpellIconID == 4612 && spellproto->GetSpellVisual() == 6859)
                 return DIMINISHING_STUN;
 
             // Freezing Trap -- 3355
@@ -314,7 +313,7 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
             if (spellproto->SpellFamilyFlags[2] & 0x4000)
                 return DIMINISHING_ROOT;
             // Frost Shock (with Frozen Power) -- 63685, no flags (6918)
-            if (spellproto->SpellIconID == 193 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39876)
+            if (spellproto->SpellIconID == 193 && spellproto->GetSpellVisual() == 39876)
                 return DIMINISHING_ROOT;
             break;
         }
@@ -325,31 +324,31 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
                 return DIMINISHING_SILENCE;
 
             // Chains of Ice (with Chilblains) -- 96294, no flags (13020)
-            if (spellproto->SpellIconID == 180 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 20135)
+            if (spellproto->SpellIconID == 180 && spellproto->GetSpellVisual() == 20135)
                 return DIMINISHING_ROOT;
 
             // Asphyxiate -- 108194
             if (spellproto->SpellFamilyFlags[2] & 0x100000)
                 return DIMINISHING_STUN;
             // Gnaw (Ghoul) -- 91800, no flags (12511)
-            if (spellproto->SpellIconID == 3010 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38760)
+            if (spellproto->SpellIconID == 3010 && spellproto->GetSpellVisual() == 38760)
                 return DIMINISHING_STUN;
             // Monstrous Blow (Ghoul w/ Dark Transformation active) -- 91797, no flags (12510)
-            if (spellproto->SpellIconID == 15 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38761)
+            if (spellproto->SpellIconID == 15 && spellproto->GetSpellVisual() == 38761)
                 return DIMINISHING_STUN;
             break;
         }
         case SPELLFAMILY_PRIEST:
         {
             // Glyph of Mind Blast -- 87194, no flags (10092)
-            if (spellproto->SpellIconID == 2114 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 38927)
+            if (spellproto->SpellIconID == 2114 && spellproto->GetSpellVisual() == 38927)
                 return DIMINISHING_ROOT;
             // Void Tendrils -- 114404, no flags (15067)
-            if (spellproto->SpellIconID == 5816 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 25199)
+            if (spellproto->SpellIconID == 5816 && spellproto->GetSpellVisual() == 25199)
                 return DIMINISHING_ROOT;
 
             // Dominate Mind -- 605
-            if (spellproto->SpellFamilyFlags[0] & 0x20000 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39068)
+            if (spellproto->SpellFamilyFlags[0] & 0x20000 && spellproto->GetSpellVisual() == 39068)
                 return DIMINISHING_INCAPACITATE;
             // Holy Word: Chastise -- 88625
             if (spellproto->SpellFamilyFlags[2] & 0x20)
@@ -370,7 +369,7 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
         case SPELLFAMILY_MONK:
         {
             // Disable -- 116706, no flags (15483)
-            if (spellproto->SpellIconID == 23 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39984)
+            if (spellproto->SpellIconID == 23 && spellproto->GetSpellVisual() == 39984)
                 return DIMINISHING_ROOT;
 
             // Charging Ox Wave -- 119392
@@ -384,13 +383,13 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto)
                 return DIMINISHING_STUN;
 
             // Glyph of Breath of Fire -- 123393, no flags (16504)
-            if (spellproto->SpellIconID == 15 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 25408)
+            if (spellproto->SpellIconID == 15 && spellproto->GetSpellVisual() == 25408)
                 return DIMINISHING_INCAPACITATE;
             // Paralysis -- 115078
             if (spellproto->SpellFamilyFlags[2] & 0x800000)
                 return DIMINISHING_INCAPACITATE;
             // Ring of Peace -- 137460, no flags (18006)
-            if (spellproto->SpellIconID == 7195 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 39999)
+            if (spellproto->SpellIconID == 7195 && spellproto->GetSpellVisual() == 39999)
                 return DIMINISHING_INCAPACITATE;
             break;
         }
@@ -444,7 +443,7 @@ int32 GetDiminishingReturnsLimitDuration(SpellInfo const* spellproto)
         case SPELLFAMILY_HUNTER:
         {
             // Binding Shot - 3 seconds in PvP (6.0)
-            if (spellproto->SpellIconID == 4612 && spellproto->GetSpellVisual(DIFFICULTY_NONE) == 6859)
+            if (spellproto->SpellIconID == 4612 && spellproto->GetSpellVisual() == 6859)
                 return 3 * IN_MILLISECONDS;
             // Wyvern Sting - 6 seconds in PvP (6.0)
             if (spellproto->SpellFamilyFlags[1] & 0x1000)
@@ -1281,11 +1280,8 @@ void SpellMgr::LoadSpellRanks()
         if (hasPrev.count(itr->first))
             continue;
 
-        SpellInfo const* first = GetSpellInfo(itr->first);
-        SpellInfo const* next = GetSpellInfo(itr->second);
-
-        if (!first || next)
-            continue;
+        SpellInfo const* first = AssertSpellInfo(itr->first);
+        SpellInfo const* next = AssertSpellInfo(itr->second);
 
         mSpellChains[itr->first].first = first;
         mSpellChains[itr->first].prev = nullptr;
@@ -1305,10 +1301,8 @@ void SpellMgr::LoadSpellRanks()
         auto nextItr = chains.find(itr->second);
         while (nextItr != chains.end())
         {
-            SpellInfo const* prev = GetSpellInfo(nextItr->first); // already checked in previous iteration (or above, in case this is the first one)
-            SpellInfo const* last = GetSpellInfo(nextItr->second);
-            if (!last)
-                break;
+            SpellInfo const* prev = AssertSpellInfo(nextItr->first); // already checked in previous iteration (or above, in case this is the first one)
+            SpellInfo const* last = AssertSpellInfo(nextItr->second);
 
             mSpellChains[nextItr->first].next = last;
 
@@ -1414,8 +1408,8 @@ void SpellMgr::LoadSpellLearnSkills()
             if (effect && effect->Effect == SPELL_EFFECT_SKILL)
             {
                 SpellLearnSkillNode dbc_node;
-                dbc_node.skill = effect->MiscValue;
-                dbc_node.step  = effect->CalcValue();
+                dbc_node.skill = uint16(effect->MiscValue);
+                dbc_node.step  = uint16(effect->CalcValue());
                 if (dbc_node.skill != SKILL_RIDING)
                     dbc_node.value = 1;
                 else
@@ -1641,7 +1635,7 @@ void SpellMgr::LoadSpellTargetPositions()
 
         // target facing is in degrees for 6484 & 9268... (blizz sucks)
         if (effect->PositionFacing > 2 * M_PI)
-            st.target_Orientation = effect->PositionFacing * M_PI / 180;
+            st.target_Orientation = effect->PositionFacing * float(M_PI) / 180;
         else
             st.target_Orientation = effect->PositionFacing;
 
@@ -2339,7 +2333,7 @@ void SpellMgr::LoadPetLevelupSpellMap()
                 if (skillLine->SkillLine != creatureFamily->SkillLine[j])
                     continue;
 
-                if (skillLine->AquireMethod != SKILL_LINE_ABILITY_LEARNED_ON_SKILL_LEARN)
+                if (skillLine->AcquireMethod != SKILL_LINE_ABILITY_LEARNED_ON_SKILL_LEARN)
                     continue;
 
                 SpellInfo const* spell = GetSpellInfo(skillLine->SpellID);
@@ -2349,7 +2343,7 @@ void SpellMgr::LoadPetLevelupSpellMap()
                 if (!spell->SpellLevel)
                     continue;
 
-                PetLevelupSpellSet& spellSet = mPetLevelupSpellMap[creatureFamily->ID];
+                PetLevelupSpellSet& spellSet = mPetLevelupSpellMap[i];
                 if (spellSet.empty())
                     ++family_count;
 
@@ -2653,17 +2647,19 @@ void SpellMgr::LoadSpellInfoStore()
 
     UnloadSpellInfoStore();
     mSpellInfoMap.resize(sSpellStore.GetNumRows(), NULL);
+    std::unordered_map<uint32, SpellInfoLoadHelper> loadData;
 
     std::unordered_map<uint32, SpellEffectEntryMap> effectsBySpell;
     std::unordered_map<uint32, SpellVisualMap> visualsBySpell;
+    std::unordered_map<uint32, SpellEffectScalingEntry const*> spellEffectScallingByEffectId;
 
     for (SpellEffectEntry const* effect : sSpellEffectStore)
     {
-        if (effect->EffectIndex >= MAX_SPELL_EFFECTS)
-        {
-            TC_LOG_ERROR("server.loading", "Spell %u has invalid EffectIndex %u, max is %u, skipped", effect->SpellID, effect->EffectIndex, uint32(MAX_SPELL_EFFECTS));
-            continue;
-        }
+        ASSERT(effect->EffectIndex < MAX_SPELL_EFFECTS, "MAX_SPELL_EFFECTS must be at least %u", effect->EffectIndex);
+        ASSERT(effect->Effect < TOTAL_SPELL_EFFECTS, "TOTAL_SPELL_EFFECTS must be at least %u", effect->Effect);
+        ASSERT(effect->EffectAura < TOTAL_AURAS, "TOTAL_AURAS must be at least %u", effect->EffectAura);
+        ASSERT(effect->ImplicitTarget[0] < TOTAL_SPELL_TARGETS, "TOTAL_SPELL_TARGETS must be at least %u", effect->ImplicitTarget[0]);
+        ASSERT(effect->ImplicitTarget[1] < TOTAL_SPELL_TARGETS, "TOTAL_SPELL_TARGETS must be at least %u", effect->ImplicitTarget[1]);
 
         SpellEffectEntryVector& effectsForDifficulty = effectsBySpell[effect->SpellID][effect->DifficultyID];
         if (effectsForDifficulty.size() <= effect->EffectIndex)
@@ -2672,12 +2668,70 @@ void SpellMgr::LoadSpellInfoStore()
         effectsForDifficulty[effect->EffectIndex] = effect;
     }
 
+    for (SpellAuraOptionsEntry const* auraOptions : sSpellAuraOptionsStore)
+        if (!auraOptions->DifficultyID)    // TODO: implement
+            loadData[auraOptions->SpellID].AuraOptions = auraOptions;
+
+    for (SpellAuraRestrictionsEntry const* auraRestrictions : sSpellAuraRestrictionsStore)
+        if (!auraRestrictions->DifficultyID)    // TODO: implement
+            loadData[auraRestrictions->SpellID].AuraRestrictions = auraRestrictions;
+
+    for (SpellCastingRequirementsEntry const* castingRequirements : sSpellCastingRequirementsStore)
+        loadData[castingRequirements->SpellID].CastingRequirements = castingRequirements;
+
+    for (SpellCategoriesEntry const* categories : sSpellCategoriesStore)
+        if (!categories->DifficultyID)  // TODO: implement
+            loadData[categories->SpellID].Categories = categories;
+
+    for (SpellClassOptionsEntry const* classOptions : sSpellClassOptionsStore)
+        loadData[classOptions->SpellID].ClassOptions = classOptions;
+
+    for (SpellCooldownsEntry const* cooldowns : sSpellCooldownsStore)
+        if (!cooldowns->DifficultyID)   // TODO: implement
+            loadData[cooldowns->SpellID].Cooldowns = cooldowns;
+
+    for (SpellEffectScalingEntry const* spellEffectScaling : sSpellEffectScalingStore)
+        spellEffectScallingByEffectId[spellEffectScaling->SpellEffectID] = spellEffectScaling;
+
+    for (SpellEquippedItemsEntry const* equippedItems : sSpellEquippedItemsStore)
+        loadData[equippedItems->SpellID].EquippedItems = equippedItems;
+
+    for (SpellInterruptsEntry const* interrupts : sSpellInterruptsStore)
+        if (!interrupts->DifficultyID)  // TODO: implement
+            loadData[interrupts->SpellID].Interrupts = interrupts;
+
+    for (SpellLevelsEntry const* levels : sSpellLevelsStore)
+        if (!levels->DifficultyID)  // TODO: implement
+            loadData[levels->SpellID].Levels = levels;
+
+    for (SpellReagentsEntry const* reagents : sSpellReagentsStore)
+        loadData[reagents->SpellID].Reagents = reagents;
+
+    for (SpellScalingEntry const* scaling : sSpellScalingStore)
+        loadData[scaling->SpellID].Scaling = scaling;
+
+    for (SpellShapeshiftEntry const* shapeshift : sSpellShapeshiftStore)
+        loadData[shapeshift->SpellID].Shapeshift = shapeshift;
+
+    for (SpellTargetRestrictionsEntry const* targetRestrictions : sSpellTargetRestrictionsStore)
+        if (!targetRestrictions->DifficultyID)  // TODO: implement
+            loadData[targetRestrictions->SpellID].TargetRestrictions = targetRestrictions;
+
+    for (SpellTotemsEntry const* totems : sSpellTotemsStore)
+        loadData[totems->SpellID].Totems = totems;
+
     for (SpellXSpellVisualEntry const* visual : sSpellXSpellVisualStore)
         visualsBySpell[visual->SpellID][visual->DifficultyID].push_back(visual);
 
     for (uint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+    {
         if (SpellEntry const* spellEntry = sSpellStore.LookupEntry(i))
-            mSpellInfoMap[i] = new SpellInfo(spellEntry, effectsBySpell[i], std::move(visualsBySpell[i]));
+        {
+            loadData[i].Entry = spellEntry;
+            loadData[i].Misc = sSpellMiscStore.LookupEntry(spellEntry->MiscID);
+            mSpellInfoMap[i] = new SpellInfo(loadData[i], effectsBySpell[i], std::move(visualsBySpell[i]), spellEffectScallingByEffectId);
+        }
+    }
 
     TC_LOG_INFO("server.loading", ">> Loaded SpellInfo store in %u ms", GetMSTimeDiffToNow(oldMSTime));
 }
@@ -2840,7 +2894,7 @@ void SpellMgr::LoadSpellInfoCustomAttributes()
         if (!spellInfo->_IsPositiveEffect(EFFECT_2, false))
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_NEGATIVE_EFF2;
 
-        if (spellInfo->GetSpellVisual(DIFFICULTY_NONE) == 3879)
+        if (spellInfo->GetSpellVisual() == 3879)
             spellInfo->AttributesCu |= SPELL_ATTR0_CU_CONE_BACK;
 
         if (talentSpells.count(spellInfo->Id))
@@ -3078,12 +3132,6 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 6474: // Earthbind Totem (instant pulse)
                 spellInfo->AttributesEx5 |= SPELL_ATTR5_START_PERIODIC_AT_APPLY;
                 break;
-            case 5176:  // Wrath
-            case 2912:  // Starfire
-            //case 78674: // Starsurge 6.x effect 1 is no more
-                const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_1))->Effect = SPELL_EFFECT_DUMMY;
-                const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_1))->TargetA = TARGET_UNIT_CASTER;
-                break;
             case 70728: // Exploit Weakness (needs target selection script)
             case 70840: // Devious Minds (needs target selection script)
                 const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_0))->TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
@@ -3115,6 +3163,10 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 47134: // Quest Complete
                 //! HACK: This spell break quest complete for alliance and on retail not used °_O
                 const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_0))->Effect = 0;
+                break;
+            case 85123: // Siege Cannon (Tol Barad)
+                const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_0))->RadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_200_YARDS);
+                const_cast<SpellEffectInfo*>(spellInfo->GetEffect(EFFECT_0))->TargetA = SpellImplicitTargetInfo(TARGET_UNIT_SRC_AREA_ENTRY);
                 break;
             // VIOLET HOLD SPELLS
             //
@@ -3430,6 +3482,11 @@ void SpellMgr::LoadSpellInfoCorrections()
 
 void SpellMgr::LoadPetFamilySpellsStore()
 {
+    std::unordered_map<uint32, SpellLevelsEntry const*> levelsBySpell;
+    for (SpellLevelsEntry const* levels : sSpellLevelsStore)
+        if (!levels->DifficultyID)
+            levelsBySpell[levels->SpellID] = levels;
+
     for (uint32 j = 0; j < sSkillLineAbilityStore.GetNumRows(); ++j)
     {
         SkillLineAbilityEntry const* skillLine = sSkillLineAbilityStore.LookupEntry(j);
@@ -3440,8 +3497,8 @@ void SpellMgr::LoadPetFamilySpellsStore()
         if (!spellInfo)
             continue;
 
-        SpellLevelsEntry const* levels = sSpellLevelsStore.LookupEntry(spellInfo->LevelsID);
-        if (spellInfo->LevelsID && (!levels || levels->SpellLevel))
+        auto levels = levelsBySpell.find(skillLine->SpellID);
+        if (levels != levelsBySpell.end() && levels->second->SpellLevel)
             continue;
 
         if (SpellMiscEntry const* spellMisc = sSpellMiscStore.LookupEntry(spellInfo->MiscID))
@@ -3457,7 +3514,7 @@ void SpellMgr::LoadPetFamilySpellsStore()
                     if (skillLine->SkillLine != cFamily->SkillLine[0] && skillLine->SkillLine != cFamily->SkillLine[1])
                         continue;
 
-                    if (skillLine->AquireMethod != SKILL_LINE_ABILITY_LEARNED_ON_SKILL_LEARN)
+                    if (skillLine->AcquireMethod != SKILL_LINE_ABILITY_LEARNED_ON_SKILL_LEARN)
                         continue;
 
                     sPetFamilySpellsStore[i].insert(spellInfo->ID);

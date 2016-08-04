@@ -18,7 +18,7 @@
 #ifndef TRINITY_SPELLAURADEFINES_H
 #define TRINITY_SPELLAURADEFINES_H
 
-#define MAX_AURAS 64                                        // client support up to 255, but it will cause problems with group auras updating
+#define MAX_AURAS 255
 
 enum AURA_FLAGS
 {
@@ -378,7 +378,7 @@ enum AuraType
     SPELL_AURA_MASTERY                                      = 318,
     SPELL_AURA_MOD_MELEE_HASTE_3                            = 319,
     SPELL_AURA_MOD_RANGED_HASTE_2                           = 320,
-    SPELL_AURA_321                                          = 321,
+    SPELL_AURA_MOD_NO_ACTIONS                               = 321,
     SPELL_AURA_INTERFERE_TARGETTING                         = 322,  // NYI
     SPELL_AURA_323                                          = 323,  // Not used in 4.3.4
     SPELL_AURA_324                                          = 324,  // spell critical chance (probably by school mask)
@@ -390,7 +390,7 @@ enum AuraType
     SPELL_AURA_CAST_WHILE_WALKING                           = 330,
     SPELL_AURA_FORCE_WEATHER                                = 331,
     SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS                    = 332,
-    SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_2                  = 333,
+    SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_TRIGGERED          = 333,  // Spells cast with this override have no cast time or power cost
     SPELL_AURA_MOD_BLIND                                    = 334,  // NYI
     SPELL_AURA_335                                          = 335,
     SPELL_AURA_MOD_FLYING_RESTRICTIONS                      = 336,  // NYI
@@ -459,7 +459,7 @@ enum AuraType
     SPELL_AURA_399                                          = 399,
     SPELL_AURA_MOD_SKILL_2                                  = 400,
     SPELL_AURA_401                                          = 401,
-    SPELL_AURA_402                                          = 402,
+    SPELL_AURA_MOD_POWER_DISPLAY                            = 402,
     SPELL_AURA_OVERRIDE_SPELL_VISUAL                        = 403,
     SPELL_AURA_OVERRIDE_ATTACK_POWER_BY_SP_PCT              = 404,
     SPELL_AURA_MOD_RATING_PCT                               = 405,  // NYI
@@ -484,7 +484,7 @@ enum AuraType
     SPELL_AURA_424                                          = 424,
     SPELL_AURA_425                                          = 425,
     SPELL_AURA_426                                          = 426,
-    SPELL_AURA_427                                          = 427,
+    SPELL_AURA_SCALE_PLAYER_LEVEL                           = 427,  // NYI
     SPELL_AURA_428                                          = 428,
     SPELL_AURA_429                                          = 429,
     SPELL_AURA_430                                          = 430,
@@ -493,9 +493,9 @@ enum AuraType
     SPELL_AURA_433                                          = 433,
     SPELL_AURA_434                                          = 434,
     SPELL_AURA_435                                          = 435,
-    SPELL_AURA_436                                          = 436,
+    SPELL_AURA_MOD_ENVIRONMENTAL_DAMAGE_TAKEN               = 436,  // NYI
     SPELL_AURA_437                                          = 437,
-    SPELL_AURA_438                                          = 438,
+    SPELL_AURA_PRELOAD_PHASE                                = 438,  // NYI
     SPELL_AURA_439                                          = 439,
     SPELL_AURA_MOD_MULTISTRIKE_DAMAGE                       = 440,  // NYI
     SPELL_AURA_MOD_MULTISTRIKE_CHANCE                       = 441,  // NYI
@@ -519,10 +519,10 @@ enum AuraType
     SPELL_AURA_IGNORE_MOVEMENT_FORCES                       = 459,  // NYI
     SPELL_AURA_RESET_COOLDOWNS_ON_DUEL_START                = 460,  // NYI
     SPELL_AURA_461                                          = 461,
-    SPELL_AURA_462                                          = 462,
-    SPELL_AURA_CONVER_CRIT_RATING_PCT_TO_PARRY_RATING       = 463, // NYI
-    SPELL_AURA_464                                          = 464,
-    SPELL_AURA_465                                          = 465,
+    SPELL_AURA_MOD_HEALING_AND_ABSORB_FROM_CASTER           = 462,  // NYI
+    SPELL_AURA_CONVERT_CRIT_RATING_PCT_TO_PARRY_RATING      = 463,  // NYI
+    SPELL_AURA_MOD_ATTACK_POWER_OF_BONUS_ARMOR              = 464,  // NYI
+    SPELL_AURA_MOD_BONUS_ARMOR                              = 465,  // NYI
     SPELL_AURA_MOD_BONUS_ARMOR_PCT                          = 466,  // Affects bonus armor gain from all sources except base stats
     SPELL_AURA_MOD_STAT_BONUS_PCT                           = 467,  // Affects stat gain from all sources except base stats
     SPELL_AURA_TRIGGER_SPELL_ON_HEALTH_BELOW_PCT            = 468,  // Triggers spell when health falls below specified percent value (once, not every time damage is taken below threshold)
@@ -530,7 +530,7 @@ enum AuraType
     SPELL_AURA_470                                          = 470,
     SPELL_AURA_MOD_VERSATILITY                              = 471,  // NYI
     SPELL_AURA_472                                          = 472,
-    SPELL_AURA_PREVENT_DURABILITY_LOSS_FROM_COMBAT          = 473, // Prevents durability loss from dealing/taking damage
+    SPELL_AURA_PREVENT_DURABILITY_LOSS_FROM_COMBAT          = 473,  // Prevents durability loss from dealing/taking damage
     SPELL_AURA_474                                          = 474,
     SPELL_AURA_ALLOW_USING_GAMEOBJECTS_WHILE_MOUNTED        = 475,
     SPELL_AURA_MOD_CURRENCY_GAIN_LOOTED                     = 476,
@@ -540,7 +540,7 @@ enum AuraType
     SPELL_AURA_480                                          = 480,
     SPELL_AURA_CONVERT_CONSUMED_RUNE                        = 481,
     SPELL_AURA_482                                          = 482,
-    SPELL_AURA_483                                          = 483,
+    SPELL_AURA_SUPPRESS_TRANSFORMS                          = 483,  // NYI
     SPELL_AURA_484                                          = 484,
     SPELL_AURA_485                                          = 485,
     SPELL_AURA_486                                          = 486,
