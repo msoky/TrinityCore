@@ -592,6 +592,7 @@ enum OpcodeClient : uint32
     CMSG_REQUEST_VEHICLE_NEXT_SEAT                    = 0x321C,
     CMSG_REQUEST_VEHICLE_PREV_SEAT                    = 0x321B,
     CMSG_REQUEST_VEHICLE_SWITCH_SEAT                  = 0x321D,
+    CMSG_REQUEST_WORLD_QUEST_UPDATE                   = 0x3323,
     CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE               = 0x36EC,
     CMSG_RESET_CHALLENGE_MODE                         = 0x31EB,
     CMSG_RESET_INSTANCES                              = 0x366D,
@@ -775,6 +776,7 @@ enum OpcodeServer : uint32
     SMSG_ARTIFACT_APPEARANCE_CHANGED                  = 0x27E3,
     SMSG_ARTIFACT_FORGE_OPENED                        = 0x27E1,
     SMSG_ARTIFACT_POWERS_UPDATED                      = 0x27E2,
+    SMSG_ARTIFACT_RESPEC_CONFIRM                      = 0x27E4,
     SMSG_ARTIFACT_XP_GAIN                             = 0x2823,
     SMSG_ATTACKER_STATE_UPDATE                        = 0x27CE,
     SMSG_ATTACK_START                                 = 0x2669,
@@ -1673,6 +1675,7 @@ enum OpcodeServer : uint32
     SMSG_WEEKLY_SPELL_USAGE                           = 0x2C18,
     SMSG_WHO                                          = 0x2BAE,
     SMSG_WHO_IS                                       = 0x26CB,
+    SMSG_WORLD_QUEST_UPDATE                           = 0x283C,
     SMSG_WORLD_SERVER_INFO                            = 0x25C0,
     SMSG_WORLD_TEXT                                   = 0x2824,
     SMSG_WOW_TOKEN_AUCTION_SOLD                       = 0x2813,
@@ -1693,7 +1696,7 @@ enum OpcodeServer : uint32
     SMSG_ZONE_UNDER_ATTACK                            = 0x2BBA,
 
     // Opcodes that are not generated automatically
-    SMSG_ACCOUNT_HEIRLOOM_UPDATE                      = 0xBADD, // no client handler
+    SMSG_ACCOUNT_HEIRLOOM_UPDATE                      = 0x25C3, // no client handler
     SMSG_ITEM_UPGRADE_RESULT                          = 0xBADD, // no client handler
     SMSG_COMPRESSED_PACKET                            = 0x3052,
     SMSG_MULTIPLE_PACKETS                             = 0x3051,
@@ -1815,7 +1818,7 @@ class OpcodeTable
         }
 
     private:
-        template<class PacketClass, void(WorldSession::*HandlerFunction)(PacketClass&)>
+        template<typename Handler, Handler HandlerFunction>
         void ValidateAndSetClientOpcode(OpcodeClient opcode, char const* name, SessionStatus status, PacketProcessing processing);
 
         void ValidateAndSetServerOpcode(OpcodeServer opcode, char const* name, SessionStatus status, ConnectionType conIdx);
